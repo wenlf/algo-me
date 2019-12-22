@@ -1,5 +1,6 @@
 target
 build
+output
 .idea
 .settings
 *.iml
