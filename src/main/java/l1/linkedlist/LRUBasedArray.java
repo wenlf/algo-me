@@ -46,8 +46,18 @@ public class LRUBasedArray<T> {
             throw new IllegalArgumentException("该缓存容器不支持null!");
         }
         Integer index = holder.get(object);
+        /*
+            1. 如果此数据之前已经被缓存在链表中了，我们遍历得到这个数据对应的结点，
+                并将其从原来的位置删除，然后再插入到链表的头部。
+
+            2. 如果此数据没有在缓存链表中，又可以分为两种情况：
+
+                a) 如果此时缓存未满，则将此结点直接插入到链表的头部；
+                b) 如果此时缓存已满，则链表尾结点删除，将新的数据结点插入链表的头部。
+         */
         if (index == null) {
             if (isFull()) {
+                // 删除队尾，然后插入当前元素到队头
                 removeAndCache(object);
             } else {
                 cache(object, count);
@@ -83,7 +93,7 @@ public class LRUBasedArray<T> {
     }
 
     /**
-     * 缓存满的情况，踢出后，再缓存到数组头部
+     * 缓存满的情况，踢出末尾元素后，再缓存到数组头部
      *
      * @param object
      */
